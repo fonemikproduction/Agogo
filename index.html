@@ -82,7 +82,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            min-height: 0; /* Prevents flex box items from breaking overflow bounds */
+            min-height: 0;
         }
 
         #viewport-canvas {
@@ -166,7 +166,7 @@
     <!-- 1. TRANSMISSION HEADER -->
     <header>
         <div class="meta-tags">
-            <span>[ TRANSMIT // SBY_OLD_CITY ]</span>
+            <span>[ EXPLORER // YOUNG_MALE ]</span>
             <span id="system-status">[ARCHIVE_ACTIVE]</span>
         </div>
         <div class="lang-switch">
@@ -176,13 +176,14 @@
 
     <!-- 2. SYSTEM ENGINE VIEWPORT -->
     <main>
-        <!-- The primary visualization node (Noise / Graphics) -->
+        <!-- The primary visualization node (Character & Graphics) -->
         <canvas id="viewport-canvas"></canvas>
         
         <!-- The narrative/code syntax console output -->
         <div id="terminal-log">
             SURABAYA OLD CITY ARCHIVE KERNEL LOADED.<br>
-            Use D-PAD [UP / DOWN / LEFT /RIGHT] to navigate architectural layers, kampungs, and urban memories.
+            CHARACTER PROFILE: Young male urban explorer with short dark hair, compact explorer backpack, vintage camera, notebook & pen, field jacket, dark cargo pants, and comfortable sneakers.<br>
+            Use D-PAD [UP / DOWN / LEFT / RIGHT] to inspect character gear states and environmental navigation.
         </div>
     </main>
 
@@ -198,9 +199,9 @@
 
     <!-- 4. STERILIZED PARTNER BRANDING LOG MATRIX -->
     <footer>
-        <a href="#" target="_blank"><span class="node-label">[COLONIAL_ARCH_NODE]</span></a>
-        <a href="#" target="_blank"><span class="node-label">[KAMPUNG_ALLEY_NODE]</span></a>
-        <a href="#" target="_blank"><span class="node-label">[ORAL_HISTORY_NODE]</span></a>
+        <a href="#" target="_blank"><span class="node-label">[GEAR_CAMERA_NODE]</span></a>
+        <a href="#" target="_blank"><span class="node-label">[FIELD_JACKET_NODE]</span></a>
+        <a href="#" target="_blank"><span class="node-label">[NOTEBOOK_PEN_NODE]</span></a>
     </footer>
 
     <!-- 5. LIGHTWEIGHT RUNTIME INSTANCE -->
@@ -208,24 +209,47 @@
         const canvas = document.getElementById('viewport-canvas');
         const ctx = canvas.getContext('2d');
         const logWindow = document.getElementById('terminal-log');
+        const langToggle = document.getElementById('lang-toggle');
 
-        // Narrative database mapping directional inputs to Surabaya Old City archives
+        let currentLang = 'EN';
+
+        // Bilingual archive database for the Character & Surabaya Old City
         const archiveNodes = {
-            UP: {
-                title: "LAYER 01: COLONIAL ARCHITECTURE & COMMERCE",
-                text: "Rows of historic buildings stand close together. Dutch colonial characteristics include symmetrical facades, tall doors and windows, high ceilings, large ventilation openings, and thick walls designed for the tropical climate. Former commercial warehouses and trading houses reflect Surabaya's port history."
+            EN: {
+                UP: {
+                    title: "GEAR STATE 01: VINTAGE CAMERA & OPTICS",
+                    text: "The vintage camera hanging around his neck is ready to capture weathered colonial facades, symmetrical doorways, and hidden courtyards across Surabaya's historical quarters."
+                },
+                DOWN: {
+                    title: "GEAR STATE 02: NOTEBOOK & FIELD WRITING",
+                    text: "Equipped with a notebook and pen in hand, the explorer documents oral histories, resident memories, and architectural annotations straight from the traditional kampungs."
+                },
+                LEFT: {
+                    title: "OUTFIT STATE 03: PRACTICAL FIELD ATTIRE",
+                    text: "Wearing an earth-toned field jacket over a plain T-shirt, paired with dark cargo pants and comfortable sneakers—outfit optimized for navigating narrow alleyways and long historical walks."
+                },
+                RIGHT: {
+                    title: "GEAR STATE 04: COMPACT EXPLORER BACKPACK",
+                    text: "Carrying a compact explorer backpack holding mapping tools, extra film/batteries, and field archives to survive the tropical climate and urban evolution pressures."
+                }
             },
-            DOWN: {
-                title: "LAYER 02: TRADITIONAL KAMPUNGS & DETAILS",
-                text: "Moving deeper into narrow alleys, small houses, workshops, and food stalls. Heritage is intimate here—found in old repaired wooden doors, decorative window vents, faded shop lettering, and traditional floor tiles shared with everyday routines."
-            },
-            LEFT: {
-                title: "LAYER 03: CULTURAL DIVERSITY & STREETS",
-                text: "Places of worship, commercial districts, and residential areas reveal multi-ethnic layers (Chinese, Arab, Javanese, European). The streetscape blends monumental historic roads with intimate alleys where past and present coexist."
-            },
-            RIGHT: {
-                title: "LAYER 04: MEMORY, CHANGE & SURVIVAL",
-                text: "Documenting the relationship between old and new. Investigating building preservation, abandonment, and modernization pressures. An exploration of urban identity, community adaptation, and Surabaya's surviving memory."
+            ID: {
+                UP: {
+                    title: "STATUS PERLENGKAPAN 01: KAMERA VINTAGE & OPTIK",
+                    text: "Kamera vintage yang menggantung di lehernya siap membidik fasad kolonial yang lapuk, pintu simetris, dan halaman tersembunyi di seluruh kawasan bersejarah Surabaya."
+                },
+                DOWN: {
+                    title: "STATUS PERLENGKAPAN 02: BUKU CATATAN & PENA",
+                    text: "Dibekali buku catatan dan pena di tangan, sang penjelajah mendokumentasikan sejarah lisan, memori warga, dan catatan arsitektur langsung dari kampung-kampung tradisional."
+                },
+                LEFT: {
+                    title: "STATUS PAKAIAN 03: ATRIBUT LAPANGAN PRAKTIS",
+                    text: "Mengenakan field jacket berwarna bumi di atas kaus polos, dipadukan dengan celana kargo gelap serta sneakers yang nyaman—pakaian yang dioptimalkan untuk menyusuri gang sempit."
+                },
+                RIGHT: {
+                    title: "STATUS PERLENGKAPAN 04: RANSEL PENJELAJAH KOMPAK",
+                    text: "Membawa ransel penjelajah kompak berisi alat pemetaan, baterai/cadangan film, dan arsip lapangan untuk bertahan di tengah iklim tropis dan tekanan evolusi perkotaan."
+                }
             }
         };
 
@@ -236,7 +260,7 @@
             renderVisualizer();
         }
 
-        // Generate vector grid representing urban sector mapping
+        // Generate vector grid and character silhouette preview
         function renderVisualizer() {
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -259,22 +283,37 @@
                 ctx.stroke();
             }
 
-            // Draw central target text box
+            // Draw character icon/silhouette placeholder box in center
             ctx.strokeStyle = '#00ff66';
             ctx.lineWidth = 2;
-            ctx.strokeRect(canvas.width / 2 - 120, canvas.height / 2 - 45, 240, 90);
+            ctx.strokeRect(canvas.width / 2 - 140, canvas.height / 2 - 55, 280, 110);
             
             ctx.fillStyle = '#00ff66';
             ctx.font = '12px Courier New';
             ctx.textAlign = 'center';
-            ctx.fillText("SURABAYA OLD CITY ARCHIVE", canvas.width / 2, canvas.height / 2 - 15);
+            ctx.fillText(currentLang === 'EN' ? "[ YOUNG MALE URBAN EXPLORER ]" : "[ PENJELAJAH KOTA MUDA ]", canvas.width / 2, canvas.height / 2 - 20);
+            
             ctx.font = '10px Courier New';
-            ctx.fillStyle = '#00aa44';
-            ctx.fillText("STATUS: EXPLORING MEMORY LAYERS", canvas.width / 2, canvas.height / 2 + 10);
+            ctx.fillStyle = '#00cc55';
+            ctx.fillText(currentLang === 'EN' ? "Short Hair | Field Jacket | Camera | Backpack" : "Rambut Pendek | Field Jacket | Kamera | Ransel", canvas.width / 2, canvas.height / 2 + 5);
+            
+            ctx.fillStyle = '#008833';
+            ctx.fillText(currentLang === 'EN' ? "STATUS: READY FOR SURABAYA STREETS" : "STATUS: SIAP MENYUSURI JALANAN SURABAYA", canvas.width / 2, canvas.height / 2 + 30);
         }
 
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
+
+        // Language toggle event listener
+        langToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentLang = currentLang === 'EN' ? 'ID' : 'EN';
+            langToggle.textContent = currentLang === 'EN' ? 'ID' : 'EN';
+            const timestamp = new Date().toLocaleTimeString();
+            logWindow.innerHTML += `<br><br>[${timestamp}] SYSTEM: Language switched to [${currentLang}]`;
+            logWindow.scrollTop = logWindow.scrollHeight;
+            renderVisualizer();
+        });
 
         // Bind interactive D-pad controls directly to state pipeline
         document.querySelectorAll('.d-btn').forEach(btn => {
@@ -286,13 +325,13 @@
 
         function executeSystemAction(action) {
             const timestamp = new Date().toLocaleTimeString();
-            const nodeData = archiveNodes[action];
+            const nodeData = archiveNodes[currentLang][action];
             
-            logWindow.innerHTML += `<br><br>[${timestamp}] VECTOR: ${nodeData.title}<br>>> ${nodeData.text}`;
+            logWindow.innerHTML += `<br><br>[${timestamp}] CHARACTER VECTOR (${action}): ${nodeData.title}<br>>> ${nodeData.text}`;
             logWindow.scrollTop = logWindow.scrollHeight; // Keep log locked to bottom line
             
             // Render interactive flash effect on canvas
-            ctx.fillStyle = 'rgba(0, 255, 102, 0.15)';
+            ctx.fillStyle = 'rgba(0, 255, 102, 0.2)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             setTimeout(renderVisualizer, 150);
         }
