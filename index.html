@@ -273,11 +273,11 @@
         const characterSprite = [
             "  HHHH  ", 
             " HHHHHH ", 
-            " BSSBB  ", // Face with camera strap hint (B)
-            " CCCCCC ", // Earth-toned field jacket collar
-            " JJJJJJ ", // Field jacket body
+            " BSSBB  ", // Face rounded (B)
+            " CCCCCC ", // Yellow field jacket collar
+            " JJJJJJ ", // White jacket
             " JJJJJJ ", 
-            " P P PP ", // Dark cargo pants
+            " P P PP ", // Green cargo pants
             " P P PP ", 
             " SSSSSS "  // Comfortable sneakers
         ];
@@ -350,22 +350,22 @@
         function drawBackground() {
             ctx.fillStyle = colors.sky; ctx.fillRect(0, 0, WORLD_WIDTH, GAME_HEIGHT);
             
-            // Draw retro colonial building facades in the background
+            // Draw tiangle retro colonial building facades in the background
             ctx.strokeStyle = '#003311';
             ctx.lineWidth = 1;
             
-            // Building 1 (Colonial Warehouse)
+            // Building 1 (white)
             ctx.fillStyle = colors.structure; 
             ctx.fillRect(100, 30, 220, 100);
             ctx.strokeRect(100, 30, 220, 100);
-            // Windows
+            // White doors
             ctx.fillStyle = '#001a0a';
             ctx.fillRect(120, 50, 30, 60);
             ctx.fillRect(170, 50, 30, 60);
             ctx.fillRect(220, 50, 30, 60);
             ctx.fillRect(270, 50, 30, 60);
 
-            // Building 2 (Traditional Kampung Houses / Shophouse)
+            // Building 2 (Yellow)
             ctx.fillStyle = colors.structure;
             ctx.fillRect(440, 40, 250, 90);
             ctx.strokeRect(440, 40, 250, 90);
