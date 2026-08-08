@@ -229,7 +229,7 @@
         window.addEventListener('resize', resizeCanvas); 
         resizeCanvas();
 
-        // Bilingual Narrative Zones Data
+        // Bilingual Narrative Zones Data (Synchronized with user narrative)
         const textZonesData = {
             EN: [
                 { 
@@ -265,27 +265,26 @@
         const colors = {
             sky: '#0a0a0a', skyDark: '#111111', path: '#181818', pathLine: '#005522',
             structure: '#161616', structureAccent: '#00ff66',
-            skin: '#e8b59b', hair: '#1a1a1a', jacket: '#554422', shirt: '#cccccc', pants: '#111111'
+            skin: '#e8b59b', hair: '#ffffff', jacket: '#cc2222', shirt: '#ffffff', pants: '#ddbb33'
         };
 
         // Pixel Art Sprite Matrix for Young Male Urban Explorer:
-        // Short dark hair, compact explorer backpack, camera hanging around neck, field jacket over t-shirt, dark cargo pants, comfortable sneakers.
+        // White hair, compact explorer backpack, camera hanging around neck, red field jacket over plain white T-shirt, yellow cargo pants, comfortable sneakers.
         const characterSprite = [
             "  HHHH  ", 
             " HHHHHH ", 
             " BSSBB  ", // Face with camera strap hint (B)
-            " CCCCCC ", // Earth-toned field jacket collar
-            " JJJJJJ ", // Field jacket body
+            " JJJJJJ ", // Red field jacket collar / upper
+            " JJJJJJ ", // Red field jacket body
             " JJJJJJ ", 
-            " P P PP ", // Dark cargo pants
+            " P P PP ", // Yellow cargo pants
             " P P PP ", 
             " SSSSSS "  // Comfortable sneakers
         ];
         const spriteColors = { 
             'H': colors.hair, 
             'S': colors.skin, 
-            'B': '#886644', // Camera strap / gear detail
-            'C': colors.shirt, 
+            'B': '#444444', // Camera / strap detail
             'J': colors.jacket, 
             'P': colors.pants 
         };
@@ -350,7 +349,6 @@
         function drawBackground() {
             ctx.fillStyle = colors.sky; ctx.fillRect(0, 0, WORLD_WIDTH, GAME_HEIGHT);
             
-            // Draw retro colonial building facades in the background
             ctx.strokeStyle = '#003311';
             ctx.lineWidth = 1;
             
@@ -358,7 +356,6 @@
             ctx.fillStyle = colors.structure; 
             ctx.fillRect(100, 30, 220, 100);
             ctx.strokeRect(100, 30, 220, 100);
-            // Windows
             ctx.fillStyle = '#001a0a';
             ctx.fillRect(120, 50, 30, 60);
             ctx.fillRect(170, 50, 30, 60);
