@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMINAL // SURABAYA_OLD_CITY_ARCHIVE</title>
+    <style>
+        /* --- CORE CONFIGURATION & THEMING --- */
+        :root {
+            --bg-color: #0a0a0a;
+            --text-primary: #00ff66;
+            --text-dim: #005522;
+            --border-style: 1px solid #00ff66;
+            --font-stack: 'Courier New', Courier, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            background-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-stack);
+            font-size: 14px;
+            line-height: 1.4;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            padding: 15px;
+        }
+
+        /* --- SCANLINE & GLITCH AESTHETIC --- */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 9999;
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* --- UTILITIES --- */
+        a {
+            color: var(--text-primary);
+            text-decoration: none;
+            border: var(--border-style);
+            padding: 2px 6px;
+        }
+        a:hover {
+            background-color: var(--text-primary);
+            color: var(--bg-color);
+        }
+
+        /* --- HEADER MATRIX --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: var(--border-style);
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        .meta-tags span {
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        .lang-switch {
+            font-size: 12px;
+        }
+
+        /* --- CENTRAL VIEWPORT (CANVAS & LOGS) --- */
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 0; /* Prevents flex box items from breaking overflow bounds */
+        }
+
+        #viewport-canvas {
+            width: 100%;
+            flex-grow: 1;
+            border: var(--border-style);
+            background-color: #000;
+        }
+
+        #terminal-log {
+            height: 140px;
+            border: var(--border-style);
+            padding: 8px;
+            overflow-y: auto;
+            font-size: 12px;
+            color: var(--text-primary);
+            background-color: #050505;
+        }
+
+        /* --- D-PAD INTERACTIVE CLUSTER --- */
+        .controls-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .d-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 45px);
+            grid-template-rows: repeat(3, 45px);
+            gap: 5px;
+        }
+
+        .d-btn {
+            border: var(--border-style);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            user-select: none;
+        }
+
+        .d-btn:active {
+            background-color: var(--text-primary);
+            color: var(--bg-color);
+        }
+
+        .d-up    { grid-column: 2; grid-row: 1; }
+        .d-left  { grid-column: 1; grid-row: 2; }
+        .d-right { grid-column: 3; grid-row: 2; }
+        .d-down  { grid-column: 2; grid-row: 3; }
+
+        /* --- FOOTER / PARTNER NODE MATRIX --- */
+        footer {
+            border-top: var(--border-style);
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .partner-node {
+            max-height: 35px;
+            filter: grayscale(1) brightness(1.5) contrast(2);
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+        }
+
+        .partner-node:hover {
+            opacity: 1;
+            filter: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. TRANSMISSION HEADER -->
+    <header>
+        <div class="meta-tags">
+            <span>[ TRANSMIT // SBY_OLD_CITY ]</span>
+            <span id="system-status">[ARCHIVE_ACTIVE]</span>
+        </div>
+        <div class="lang-switch">
+            <a href="#" id="lang-toggle">ID</a>
+        </div>
+    </header>
+
+    <!-- 2. SYSTEM ENGINE VIEWPORT -->
+    <main>
+        <!-- The primary visualization node (Noise / Graphics) -->
+        <canvas id="viewport-canvas"></canvas>
+        
+        <!-- The narrative/code syntax console output -->
+        <div id="terminal-log">
+            SURABAYA OLD CITY ARCHIVE KERNEL LOADED.<br>
+            Use D-PAD [UP / DOWN / LEFT /RIGHT] to navigate architectural layers, kampungs, and urban memories.
+        </div>
+    </main>
+
+    <!-- 3. DIRECTIONAL INTERACTION INTERFACE -->
+    <div class="controls-wrapper">
+        <div class="d-pad">
+            <div class="d-btn d-up" data-dir="UP">▲</div>
+            <div class="d-btn d-left" data-dir="LEFT">◀</div>
+            <div class="d-btn d-right" data-dir="RIGHT">▶</div>
+            <div class="d-btn d-down" data-dir="DOWN">▼</div>
+        </div>
+    </div>
+
+    <!-- 4. STERILIZED PARTNER BRANDING LOG MATRIX -->
+    <footer>
+        <a href="#" target="_blank"><span class="node-label">[COLONIAL_ARCH_NODE]</span></a>
+        <a href="#" target="_blank"><span class="node-label">[KAMPUNG_ALLEY_NODE]</span></a>
+        <a href="#" target="_blank"><span class="node-label">[ORAL_HISTORY_NODE]</span></a>
+    </footer>
+
+    <!-- 5. LIGHTWEIGHT RUNTIME INSTANCE -->
+    <script>
+        const canvas = document.getElementById('viewport-canvas');
+        const ctx = canvas.getContext('2d');
+        const logWindow = document.getElementById('terminal-log');
+
+        // Narrative database mapping directional inputs to Surabaya Old City archives
+        const archiveNodes = {
+            UP: {
+                title: "LAYER 01: COLONIAL ARCHITECTURE & COMMERCE",
+                text: "Rows of historic buildings stand close together. Dutch colonial characteristics include symmetrical facades, tall doors and windows, high ceilings, large ventilation openings, and thick walls designed for the tropical climate. Former commercial warehouses and trading houses reflect Surabaya's port history."
+            },
+            DOWN: {
+                title: "LAYER 02: TRADITIONAL KAMPUNGS & DETAILS",
+                text: "Moving deeper into narrow alleys, small houses, workshops, and food stalls. Heritage is intimate here—found in old repaired wooden doors, decorative window vents, faded shop lettering, and traditional floor tiles shared with everyday routines."
+            },
+            LEFT: {
+                title: "LAYER 03: CULTURAL DIVERSITY & STREETS",
+                text: "Places of worship, commercial districts, and residential areas reveal multi-ethnic layers (Chinese, Arab, Javanese, European). The streetscape blends monumental historic roads with intimate alleys where past and present coexist."
+            },
+            RIGHT: {
+                title: "LAYER 04: MEMORY, CHANGE & SURVIVAL",
+                text: "Documenting the relationship between old and new. Investigating building preservation, abandonment, and modernization pressures. An exploration of urban identity, community adaptation, and Surabaya's surviving memory."
+            }
+        };
+
+        // Dynamically size canvas inside its CSS limits
+        function resizeCanvas() {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            renderVisualizer();
+        }
+
+        // Generate vector grid representing urban sector mapping
+        function renderVisualizer() {
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw grid lines
+            ctx.strokeStyle = '#002211';
+            ctx.lineWidth = 1;
+            const gridSize = 35;
+            
+            for (let x = 0; x < canvas.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            // Draw central target text box
+            ctx.strokeStyle = '#00ff66';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(canvas.width / 2 - 120, canvas.height / 2 - 45, 240, 90);
+            
+            ctx.fillStyle = '#00ff66';
+            ctx.font = '12px Courier New';
+            ctx.textAlign = 'center';
+            ctx.fillText("SURABAYA OLD CITY ARCHIVE", canvas.width / 2, canvas.height / 2 - 15);
+            ctx.font = '10px Courier New';
+            ctx.fillStyle = '#00aa44';
+            ctx.fillText("STATUS: EXPLORING MEMORY LAYERS", canvas.width / 2, canvas.height / 2 + 10);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Bind interactive D-pad controls directly to state pipeline
+        document.querySelectorAll('.d-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const direction = e.target.getAttribute('data-dir');
+                executeSystemAction(direction);
+            });
+        });
+
+        function executeSystemAction(action) {
+            const timestamp = new Date().toLocaleTimeString();
+            const nodeData = archiveNodes[action];
+            
+            logWindow.innerHTML += `<br><br>[${timestamp}] VECTOR: ${nodeData.title}<br>>> ${nodeData.text}`;
+            logWindow.scrollTop = logWindow.scrollHeight; // Keep log locked to bottom line
+            
+            // Render interactive flash effect on canvas
+            ctx.fillStyle = 'rgba(0, 255, 102, 0.15)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            setTimeout(renderVisualizer, 150);
+        }
+    </script>
+</body>
+</html>
